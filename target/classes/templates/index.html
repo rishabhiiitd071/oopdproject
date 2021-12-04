@@ -2,8 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-<meta charset="ISO-8859-1">
-<title>Registration and Login App</title>
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<title>Order Page</title>
 
 <style>
 .modal {
@@ -18,10 +23,41 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}</style>
+}
+body{
+            overflow-x: hidden;
+     }
+</style>
 
 </head>
 <body>
+	<nav class="navbar" style="background-color: black;">
+        <div class="col-md-6">
+          <a class="navbar-brand" href="#" style="margin-left: 5%;">
+            <img
+            	th:src="@{/images/logo3.jpg}"
+              width="15%"
+              alt=""
+              loading="lazy"
+            />
+          </a>
+        </div>
+          
+          <div class="col-md-6" style="color:azure">
+            <div style="text-align: right; margin-right: 10%;"><span  style="font-weight: 500;" >Contact : </span><span style="font-weight: 200;">+91-123-456-789</span>&nbsp&nbsp&nbsp
+            <span  style="font-weight: 500;" >Timings : </span><span style="font-weight: 200;">11:00 AM - 10:00 PM</span>
+            </div>
+        </div>
+      </nav>
+      
+      <div class="container-fluid px-0">
+        <div class="row">
+          <div class="col-md-12">
+            <img th:src="@{/images/hero.jpg}" alt=".." width="100%" class="img-responsive" />
+          </div>
+         </div>
+      </div>
+      
 	<script>
 	var ETA;
 
@@ -45,7 +81,7 @@ content.appendChild(money);
 }
 	
   const userAction = async () => {
-  const response = await fetch('http://localhost:8080/getresto');
+  const response = await fetch('http://localhost:8080/getresto?cityName=Delhi');
   const myJson = await response.json(); //extract JSON from the http response
   
   
@@ -113,6 +149,7 @@ for(var i = 0; i < rates.length; i++){
 
 const can = ()=>{
 	alert("You have cancelled the order");
+	document.location.reload(true)
 }
 
 function cancel(){
@@ -148,5 +185,12 @@ const PayNow=()=>{
 
 <button id="can" onclick="can()" style="visibility: hidden;">Cancel the order</button>
 
+<footer style="background-color: black;">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="color:white;">
+          © 2021 Copyright : Restro 
+        </div>
+        <!-- Copyright -->
+      </footer>
 </body>
 </html>

@@ -14,7 +14,7 @@ public class RestoService {
 	@Autowired
 	private RestaurantRepo restoRepo;
 	
-	public Object getRestaurant() {
+	public Object getRestaurant(String city) {
 		
 //		Restaurant resto = new Restaurant();
 //		resto.setNorthMenu(new North());
@@ -30,10 +30,15 @@ public class RestoService {
 //		resto.setChineseMenu(new Chinese());
 //		resto.getChineseMenu().setDishname("Noodles");
 //		resto.getChineseMenu().setPrice((long)10);
+//		resto.setAddress("DELHI");
+//		resto.setCity("Delhi");
+//		System.out.println("==============>>"+resto.toString());
 //		restoRepo.save(resto);
 		
+		
+		
 		ArrayList<ArrayList<String>> final_d = new ArrayList<>();
-		Iterable<Restaurant> result =  restoRepo.findAll();
+		Iterable<Restaurant> result =  restoRepo.findByCity(city);
 		
 		for (Restaurant restaurant : result) {
 			ArrayList<String> Data = new ArrayList<>();

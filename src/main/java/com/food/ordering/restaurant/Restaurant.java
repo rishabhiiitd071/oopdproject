@@ -19,6 +19,14 @@ public class Restaurant {
 	@Column
 	private String name;
 	
+	
+	@Column
+	private String address;
+	
+	@Column 
+	private String city;
+	
+	
 	public Long getEta() {
 		return eta;
 	}
@@ -41,6 +49,22 @@ public class Restaurant {
 
 	public void setChineseMenu(Chinese chineseMenu) {
 		this.chineseMenu = chineseMenu;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+	
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	@Column

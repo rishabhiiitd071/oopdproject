@@ -17,9 +17,10 @@ public class OrderRestController {
 	private RestoService serve; 
 	
 	@GetMapping("/getresto")
-	public Object getRestaurant() {
+	@ResponseBody
+	public Object getRestaurant(@RequestParam(name = "cityName") String cityName) {
 		
-		return serve.getRestaurant();
+		return serve.getRestaurant(cityName);
 	}
 	
 	@GetMapping("/getmenu")
