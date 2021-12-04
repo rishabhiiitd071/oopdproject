@@ -5,42 +5,148 @@
 <meta charset="ISO-8859-1">
 <title>Registration and Login App</title>
 
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
+<style>
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}</style>
 
 </head>
 <body>
-	<!-- create navigation bar ( header) -->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login Module</a>
-			</div>
-			<div id="navbar" class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
+	<script>
+	var ETA;
 
-	<br>
-	<br>
 
-	<div class="container">
-		<h1>Registration and Login with Spring Boot, Spring Security,
-			Thymeleaf, Hibernate and MySQL</h1>
-		Welcome <span sec:authentication="principal.username"> User</span>
-	</div>
+	const orderNow = ()=>{
+			
+	 var rates = document.getElementsByName('menu');
+var rate_value=0;
+for(var i = 0; i < rates.length; i++){
+    if(rates[i].checked){
+        rate_value += parseInt(rates[i].value);
+        }
+}
+var modal = document.getElementById("myModal");
+modal.style.display = "block";
+
+var content = document.getElementsByClassName("modal-content")[0];
+var money = document.createTextNode(rate_value);
+content.appendChild(money);
+
+}
+	
+  const userAction = async () => {
+  const response = await fetch('http://localhost:8080/getresto');
+  const myJson = await response.json(); //extract JSON from the http response
+  
+  
+  var node = document.getElementById("resto")
+  for(var item in myJson) {
+	
+	radiobox = document.createElement('input');
+    radiobox.type = 'radio';
+    radiobox.name = "resta";
+    radiobox.value = myJson[item][0];
+    radiobox.eta = myJson[item][1];
+    
+    var label = document.createElement('label')
+    label.htmlFor = myJson[item][0];
+ 
+    var description = document.createTextNode(myJson[item][0]);
+    label.appendChild(description);
+ 
+    var newline = document.createElement('br')
+    
+    node.appendChild(radiobox);
+    node.appendChild(label);
+    node.appendChild(newline);
+
+}
+  
+}
+
+  const userSel = async()=>{
+ var rates = document.getElementsByName('resta');
+var rate_value;
+for(var i = 0; i < rates.length; i++){
+    if(rates[i].checked){
+		ETA = rates[i].eta;
+        rate_value = rates[i].value;
+           var str = 'http://localhost:8080/getmenu?restName=' + rate_value;
+    	const response = await fetch(str);
+  	const myJson = await response.json(); 
+  var node = document.getElementById("menu")
+  for(var item in myJson) {
+  		
+  	radiobox = document.createElement('input');
+    radiobox.type = 'checkbox';
+    radiobox.name = "menu";
+    radiobox.value = myJson[item];
+    
+    var label = document.createElement('label')
+    label.htmlFor = item;
+ 
+    var description = document.createTextNode(item);
+    label.appendChild(description);
+ 
+    var newline = document.createElement('br')
+    
+    node.appendChild(radiobox);
+    node.appendChild(label);
+    node.appendChild(newline);
+  		
+}
+    }
+    }
+ 
+}
+
+
+const can = ()=>{
+	alert("You have cancelled the order");
+}
+
+function cancel(){
+alert("YOU CAN CANCEL THE ORDER NOW")
+document.getElementById("can").style.visibility = "visible";
+}
+
+const PayNow=()=>{
+	setTimeout(cancel,ETA*1000)
+	document.getElementById("myModal").style.visibility = "hidden";
+}
+
+	</script>
+
+	<button onclick="userAction()">Get Restaurants</button>	
+<div id="resto">
+</div>
+
+<button onclick="userSel()">Get Menu</button>	
+<div id="menu">
+</div>
+
+<button id="myBtn" onclick="orderNow()">Order food</button>
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+	
+  </div>
+<button id="payment" onclick="PayNow()">Pay</button>
+</div>
+
+<button id="can" onclick="can()" style="visibility: hidden;">Cancel the order</button>
+
 </body>
 </html>
