@@ -65,16 +65,32 @@ body{
 	const orderNow = ()=>{
 			
 	 var rates = document.getElementsByName('menu');
+	 var coup = document.getElementsByName('coupon');
+	 var disc;
+	if (coup[0].checked){
+		disc= coup[0].value; 
+	}else{
+		disc = coup[1].value;
+	}
 var rate_value=0;
-for(var i = 0; i < rates.length; i++){
+for(var i = 0; i < rates.length; i=i+2){
     if(rates[i].checked){
-        rate_value += parseInt(rates[i].value);
+		
+        rate_value += parseInt(rates[i].value)*parseInt(rates[i+1].value);
         }
 }
+
+if (rate_value < 100){
+	alert("THE BASE BILL SHOULD BE GREATER THAN 100");
+	return;
+}
+
+
 var modal = document.getElementById("myModal");
 modal.style.display = "block";
-
+rate_value = rate_value-(rate_value*disc)/100;
 var content = document.getElementsByClassName("modal-content")[0];
+content.innerHTML="";
 var money = document.createTextNode(rate_value);
 content.appendChild(money);
 
@@ -128,17 +144,23 @@ for(var i = 0; i < rates.length; i++){
     radiobox.type = 'checkbox';
     radiobox.name = "menu";
     radiobox.value = myJson[item];
+    radiobox.label="Hello";
     
     var label = document.createElement('label')
     label.htmlFor = item;
- 
-    var description = document.createTextNode(item);
+ 	label.className="food"
+    var description = document.createTextNode(item+'  Price :  ' + myJson[item]);
     label.appendChild(description);
- 
+ 	
+ 	var quantity = document.createElement('input')
+ 	quantity.type = 'text'
+ 	quantity.name = "menu";
+ 	
     var newline = document.createElement('br')
     
     node.appendChild(radiobox);
     node.appendChild(label);
+    node.appendChild(quantity);
     node.appendChild(newline);
   		
 }
@@ -163,7 +185,16 @@ const PayNow=()=>{
 	document.getElementById("myModal").style.visibility = "hidden";
 }
 
+const Discard=()=>{
+	document.location.reload(true)
+}
+
+const back=()=>{
+	var modal = document.getElementById("myModal");
+	modal.style.display = "none";
+}
 	</script>
+<p>Please enter your city</p>
 <input type="text" id="cityName" name="cityName">
 	<button onclick="userAction()">Get Restaurants</button>	
 <div id="resto">
@@ -173,15 +204,23 @@ const PayNow=()=>{
 <div id="menu">
 </div>
 
+ <input type="radio" value="50" id="SAVE50" name="coupon">
+ <label for="50">SAVE 50</label>
+ <input type="radio" value="20" id="SAVE20" name="coupon">
+ <label for="20">SAVE 20</label>
 <button id="myBtn" onclick="orderNow()">Order food</button>
 
 <div id="myModal" class="modal">
-
+<button type="button" class="close"
+                               onclick="back()">
+                            Back to cart
+                        </button>
   <!-- Modal content -->
   <div class="modal-content">
 	
   </div>
 <button id="payment" onclick="PayNow()">Pay</button>
+<button id="Discard" onclick="Discard()">Discard</button>
 </div>
 
 <button id="can" onclick="can()" style="visibility: hidden;">Cancel the order</button>
