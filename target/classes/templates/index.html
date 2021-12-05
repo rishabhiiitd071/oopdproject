@@ -81,7 +81,8 @@ content.appendChild(money);
 }
 	
   const userAction = async () => {
-  const response = await fetch('http://localhost:8080/getresto?cityName=Delhi');
+	var city = document.getElementById('cityName').value
+  const response = await fetch('http://localhost:8080/getresto?cityName='+city);
   const myJson = await response.json(); //extract JSON from the http response
   
   
@@ -163,7 +164,7 @@ const PayNow=()=>{
 }
 
 	</script>
-
+<input type="text" id="cityName" name="cityName">
 	<button onclick="userAction()">Get Restaurants</button>	
 <div id="resto">
 </div>
